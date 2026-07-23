@@ -2,6 +2,17 @@ const page = document.querySelector(".page");
 const root = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const atmosphere = document.querySelector("[data-atmosphere]");
+const placeholderImages = document.querySelectorAll("[data-placeholder]");
+
+for (const image of placeholderImages) {
+  const removePlaceholder = () => image.classList.add("scene__layer--loaded");
+
+  if (image.complete && image.naturalWidth > 0) {
+    removePlaceholder();
+  } else {
+    image.addEventListener("load", removePlaceholder, { once: true });
+  }
+}
 
 let targetX = 0;
 let targetY = 0;

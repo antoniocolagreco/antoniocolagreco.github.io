@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="White bird in flight">
+  <rect width="64" height="64" rx="14" fill="#3585e2" />
+  <g transform="rotate(-7 32 32)">
+    <g transform="translate(8 31) scale(1.35)" fill="#fff">
+      <path d="M0 2C5-6 12-8 17-1C22-8 30-6 35 2C27-1 22 3 17 7C12 3 8-1 0 2Z" />
+      <path d="M15 4L20 4L24 11L18 8L14 12Z" />
+    </g>
+  </g>
+</svg>
