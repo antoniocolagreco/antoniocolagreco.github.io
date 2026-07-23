@@ -67,12 +67,9 @@ a:focus-visible {
 }
 
 .scene__layer--background {
-  transform: translate3d(
-      calc(var(--pointer-x) * -13px),
+  transform: translate3d(calc(var(--pointer-x) * -13px),
       calc(var(--pointer-y) * -9px),
-      0
-    )
-    scale(1.055);
+      0) scale(1.055);
 }
 
 .scene__birds {
@@ -102,12 +99,9 @@ a:focus-visible {
 
 .scene__layer--foreground {
   z-index: 1;
-  transform: translate3d(
-      calc(var(--pointer-x) * 25px),
+  transform: translate3d(calc(var(--pointer-x) * 25px),
       calc(var(--pointer-y) * 17px),
-      0
-    )
-    scale(1.075);
+      0) scale(1.075);
 }
 
 .scene__contrast {
@@ -251,6 +245,7 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .atmosphere,
   .scene__birds {
     display: none;
@@ -263,6 +258,7 @@ h1 {
 }
 
 @keyframes bird-flap {
+
   0%,
   100% {
     transform: scaleY(0.72) rotate(-2deg);
@@ -271,4 +267,17 @@ h1 {
   50% {
     transform: scaleY(1.08) rotate(2deg);
   }
+}
+
+
+.scene__birds {
+  color: #ffffff;
+}
+
+.scene__bird {
+  opacity: 0.8;
+}
+
+.scene__bird--far {
+  opacity: 0.55;
 }

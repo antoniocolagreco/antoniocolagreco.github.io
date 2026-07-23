@@ -1,114 +1,80 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Antonio Colagreco is a software engineer building web applications and distributed systems with Node.js, React, TypeScript and Kafka."
-    />
-    <meta name="theme-color" content="#10161a" />
-    <meta property="og:title" content="Antonio Colagreco — Software Engineer" />
-    <meta
-      property="og:description"
-      content="Web applications and distributed systems built with Node.js, React, TypeScript and Kafka."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://colagreco.dev" />
-    <meta property="og:image" content="https://colagreco.dev/assets/background-90.webp" />
-    <title>Antonio Colagreco — Software Engineer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Marcellus&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="preload" href="./assets/background-90.webp" as="image" />
-    <link rel="preload" href="./assets/foreground-90.webp" as="image" />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <main class="page" aria-labelledby="page-title">
-      <div class="scene" aria-hidden="true">
-        <img
-          class="scene__layer scene__layer--background"
-          src="./assets/background-90.webp"
-          alt=""
-          width="1672"
-          height="941"
-        />
-        <svg
-          class="scene__layer scene__layer--background scene__birds"
-          viewBox="0 0 1672 941"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-        >
-          <g class="scene__bird scene__bird--near">
-            <g class="scene__bird-flap">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Antonio Colagreco is a software engineer building web applications and distributed systems with Node.js, React, TypeScript and Kafka." />
+  <meta name="theme-color" content="#10161a" />
+  <meta property="og:title" content="Antonio Colagreco — Software Engineer" />
+  <meta property="og:description"
+    content="Web applications and distributed systems built with Node.js, React, TypeScript and Kafka." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://colagreco.dev" />
+  <meta property="og:image" content="https://colagreco.dev/assets/background-90.webp" />
+  <title>Antonio Colagreco — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&amp;display=swap" rel="stylesheet" />
+  <link rel="preload" href="./assets/background-90.webp" as="image" />
+  <link rel="preload" href="./assets/foreground-90.webp" as="image" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <main class="page" aria-labelledby="page-title">
+    <div class="scene" aria-hidden="true">
+      <img class="scene__layer scene__layer--background" src="./assets/background-90.webp" alt="" width="1672"
+        height="941" />
+      <svg class="scene__layer scene__layer--background scene__birds" viewBox="0 0 1672 941"
+        preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g class="scene__bird scene__bird--near">
+          <g class="scene__bird-flap">
+            <path d="M0 2C5-6 12-8 17-1C22-8 30-6 35 2C27-1 22 3 17 7C12 3 8-1 0 2Z" />
+            <path d="M15 4L20 4L24 11L18 8L14 12Z" />
+          </g>
+          <animateMotion dur="24s" begin="-7s" repeatCount="indefinite"
+            path="M180 172C230 128 350 130 400 174C350 218 230 216 180 172Z" />
+        </g>
+        <g class="scene__bird scene__bird--far">
+          <g transform="scale(.72)">
+            <g class="scene__bird-flap scene__bird-flap--delayed">
               <path d="M0 2C5-6 12-8 17-1C22-8 30-6 35 2C27-1 22 3 17 7C12 3 8-1 0 2Z" />
               <path d="M15 4L20 4L24 11L18 8L14 12Z" />
             </g>
-            <animateMotion
-              dur="24s"
-              begin="-7s"
-              repeatCount="indefinite"
-              path="M1080 172C1130 128 1250 130 1300 174C1250 218 1130 216 1080 172Z"
-            />
           </g>
-          <g class="scene__bird scene__bird--far">
-            <g transform="scale(.72)">
-              <g class="scene__bird-flap scene__bird-flap--delayed">
-                <path d="M0 2C5-6 12-8 17-1C22-8 30-6 35 2C27-1 22 3 17 7C12 3 8-1 0 2Z" />
-                <path d="M15 4L20 4L24 11L18 8L14 12Z" />
-              </g>
-            </g>
-            <animateMotion
-              dur="31s"
-              begin="-19s"
-              repeatCount="indefinite"
-              path="M1210 245C1250 215 1335 216 1370 247C1335 279 1250 277 1210 245Z"
-            />
-          </g>
-        </svg>
-        <img
-          class="scene__layer scene__layer--foreground"
-          src="./assets/foreground-90.webp"
-          alt=""
-          width="1671"
-          height="941"
-        />
-        <div class="scene__contrast"></div>
-      </div>
+          <animateMotion dur="31s" begin="-19s" repeatCount="indefinite"
+            path="M310 245C350 215 435 216 470 247C435 279 350 277 310 245Z" />
+        </g>
+      </svg>
+      <img class="scene__layer scene__layer--foreground" src="./assets/foreground-90.webp" alt="" width="1671"
+        height="941" />
+      <div class="scene__contrast"></div>
+    </div>
 
-      <canvas class="atmosphere" data-atmosphere aria-hidden="true"></canvas>
+    <canvas class="atmosphere" data-atmosphere aria-hidden="true"></canvas>
 
-      <section class="intro">
-        <p class="intro__role">Software Developer</p>
-        <h1 id="page-title">Antonio<br />Colagreco</h1>
-        <p class="intro__description">
-          I build web applications with Node.js, React and TypeScript.
-          I love to explore and discover.
-        </p>
-        <nav class="intro__contacts" aria-label="Contact links">
-          <a class="intro__contact" href="mailto:antonio@colagreco.dev">
-            Mail
-          </a>
-          <a
-            class="intro__contact"
-            href="https://github.com/antoniocolagreco"
-            rel="me noreferrer"
-            target="_blank"
-          >GitHub</a>
-          <a
-            class="intro__contact"
-            href="https://www.linkedin.com/in/antonio-colagreco"
-            rel="me noreferrer"
-            target="_blank"
-          >LinkedIn</a>
-        </nav>
-      </section>
-    </main>
+    <section class="intro">
+      <p class="intro__role">Software Developer</p>
+      <h1 id="page-title">Antonio<br />Colagreco</h1>
+      <p class="intro__description">
+        I build web applications with Node.js, React and TypeScript.
+        I love to explore and discover.
+      </p>
+      <nav class="intro__contacts" aria-label="Contact links">
+        <a class="intro__contact" href="mailto:antonio@colagreco.dev">
+          Mail
+        </a>
+        <a class="intro__contact" href="https://github.com/antoniocolagreco" rel="me noreferrer"
+          target="_blank">GitHub</a>
+        <a class="intro__contact" href="https://www.linkedin.com/in/antonio-colagreco" rel="me noreferrer"
+          target="_blank">LinkedIn</a>
+      </nav>
+    </section>
+  </main>
 
-    <script src="./script.js"></script>
-  </body>
+  <script src="./script.js"></script>
+</body>
+
 </html>
