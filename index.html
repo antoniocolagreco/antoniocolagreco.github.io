@@ -15,7 +15,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://colagreco.dev" />
-    <meta property="og:image" content="https://colagreco.dev/assets/scene-background.png" />
+    <meta property="og:image" content="https://colagreco.dev/assets/background-90.webp" />
     <title>Antonio Colagreco — Software Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,8 +23,8 @@
       href="https://fonts.googleapis.com/css2?family=Marcellus&amp;display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" href="./assets/scene-background.png" as="image" />
-    <link rel="preload" href="./assets/scene-foreground.png" as="image" />
+    <link rel="preload" href="./assets/background-90.webp" as="image" />
+    <link rel="preload" href="./assets/foreground-90.webp" as="image" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -32,20 +32,22 @@
       <div class="scene" aria-hidden="true">
         <img
           class="scene__layer scene__layer--background"
-          src="./assets/scene-background.png"
+          src="./assets/background-90.webp"
           alt=""
           width="1672"
           height="941"
         />
         <img
           class="scene__layer scene__layer--foreground"
-          src="./assets/scene-foreground.png"
+          src="./assets/foreground-90.webp"
           alt=""
           width="1671"
           height="941"
         />
         <div class="scene__contrast"></div>
       </div>
+
+      <canvas class="atmosphere" data-atmosphere aria-hidden="true"></canvas>
 
       <section class="intro">
         <p class="intro__role">Software Engineer</p>
