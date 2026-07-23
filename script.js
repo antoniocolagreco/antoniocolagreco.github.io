@@ -2,15 +2,46 @@ const page = document.querySelector(".page");
 const root = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const atmosphere = document.querySelector("[data-atmosphere]");
-const placeholderImages = document.querySelectorAll("[data-placeholder]");
+const fullImages = document.querySelectorAll("[data-full-image]");
 
-for (const image of placeholderImages) {
-  const removePlaceholder = () => image.classList.add("scene__layer--loaded");
+for (const image of fullImages) {
+  const placeholder = document.querySelector(
+    `[data-placeholder-for="${image.id}"]`,
+  );
+
+  const revealImage = async () => {
+    try {
+      await image.decode();
+    } catch {
+      if (!image.naturalWidth) {
+        return;
+      }
+    }
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        const hidePlaceholder = () => {
+          placeholder?.classList.add("scene__placeholder--hidden");
+        };
+
+        if (reducedMotion.matches) {
+          hidePlaceholder();
+        } else if (placeholder) {
+          placeholder.addEventListener("transitionend", hidePlaceholder, {
+            once: true,
+          });
+          placeholder.classList.add("scene__placeholder--fading");
+        }
+
+        image.classList.add("scene__image--loaded");
+      });
+    });
+  };
 
   if (image.complete && image.naturalWidth > 0) {
-    removePlaceholder();
+    revealImage();
   } else {
-    image.addEventListener("load", removePlaceholder, { once: true });
+    image.addEventListener("load", revealImage, { once: true });
   }
 }
 
