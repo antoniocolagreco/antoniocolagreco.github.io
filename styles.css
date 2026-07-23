@@ -75,6 +75,31 @@ a:focus-visible {
     scale(1.055);
 }
 
+.scene__birds {
+  z-index: 0;
+  overflow: visible;
+  color: #243844;
+}
+
+.scene__bird {
+  fill: currentColor;
+  opacity: 0.5;
+}
+
+.scene__bird--far {
+  opacity: 0.32;
+}
+
+.scene__bird-flap {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bird-flap 2.8s ease-in-out infinite;
+}
+
+.scene__bird-flap--delayed {
+  animation-delay: -1.4s;
+}
+
 .scene__layer--foreground {
   z-index: 1;
   transform: translate3d(
@@ -110,6 +135,15 @@ a:focus-visible {
   width: min(42rem, calc(100% - 3rem));
   margin-left: clamp(1.5rem, 7vw, 7.5rem);
   text-shadow: 0 2px 2px rgba(5, 10, 13, 0.68);
+}
+
+.intro__role,
+.intro__description,
+.intro__contacts {
+  text-shadow:
+    0 1px 1px rgba(5, 10, 13, 0.98),
+    0 3px 8px rgba(5, 10, 13, 0.92),
+    0 6px 18px rgba(5, 10, 13, 0.68);
 }
 
 .intro__role {
@@ -217,12 +251,24 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere {
+  .atmosphere,
+  .scene__birds {
     display: none;
   }
 
   .scene__layer--background,
   .scene__layer--foreground {
     transform: scale(1.055);
+  }
+}
+
+@keyframes bird-flap {
+  0%,
+  100% {
+    transform: scaleY(0.72) rotate(-2deg);
+  }
+
+  50% {
+    transform: scaleY(1.08) rotate(2deg);
   }
 }
