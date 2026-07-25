@@ -139,10 +139,30 @@ if (atmosphere && !reducedMotion.matches) {
   const context = atmosphere.getContext("2d");
   const leaves = [];
   const windStreaks = [];
+  const mobileWindCount = 4;
+  const desktopWindCount = 8;
+  const windPrimaryColor = "#fff8d6";
+  const windSecondaryOpacity = 0.68;
+  const windBandTopRatio = 0.14;
+  const windBandBottomRatio = 0.76;
+  const windPathStrokePadding = 2;
+  const windVerticalGap = 12;
+  const windHorizontalGap = 28;
+  const windPositionAttempts = 48;
+  const windMinimumLength = 90;
+  const windLengthRatio = 0.65;
+  const windMaximumLength = 285;
+  const windSpeed = 48;
+  const windMinimumSpawnDelay = 2000;
+  const windMaximumSpawnDelay = 4000;
+  const windSpawnRetryDelay = 250;
   let atmosphereFrame = 0;
   let previousTime = performance.now();
   let viewportWidth = 0;
   let viewportHeight = 0;
+  let windBandTop = 0;
+  let windBandBottom = 0;
+  let nextWindSpawnTime = 0;
 
   function resetLeaf(leaf, initial = false) {
     leaf.x = initial
@@ -162,17 +182,150 @@ if (atmosphere && !reducedMotion.matches) {
     leaf.color = Math.random() > 0.45 ? "#b18a3e" : "#65743a";
   }
 
-  function resetWind(streak, initial = false) {
-    streak.length = Math.min(viewportWidth * 0.27, 200 + Math.random() * 170);
-    streak.x = initial
-      ? Math.random() * (viewportWidth + streak.length)
-      : viewportWidth + streak.length + Math.random() * 120;
-    streak.y = viewportHeight * 0.14 + Math.random() * viewportHeight * 0.62;
-    streak.speed = 34 + Math.random() * 28;
-    streak.amplitude = 7 + Math.random() * 12;
+  function getWindPathExtents(amplitude) {
+    const mainCurveExtent = amplitude * 2;
+    const secondaryCurveExtent = Math.max(
+      mainCurveExtent,
+      amplitude + 5,
+      8 - amplitude,
+    );
+
+    return {
+      top: mainCurveExtent + windPathStrokePadding,
+      bottom: secondaryCurveExtent + windPathStrokePadding,
+    };
+  }
+
+  function randomizeWind(streak) {
+    const maximumLength = Math.min(viewportWidth * 0.27, windMaximumLength);
+    const minimumLength = Math.min(
+      maximumLength,
+      Math.max(windMinimumLength, maximumLength * windLengthRatio),
+    );
+
+    streak.length =
+      minimumLength + Math.random() * (maximumLength - minimumLength);
+    streak.amplitude = 7 + Math.random() * 5;
+    streak.speed = windSpeed;
     streak.phase = Math.random() * Math.PI * 2;
-    streak.opacity = 0.1 + Math.random() * 0.1;
-    streak.width = Math.random() > 0.5 ? 2 : 1;
+    streak.opacity = 0.24 + Math.random() * 0.12;
+    streak.width = Math.random() > 0.5 ? 3 : 2;
+  }
+
+  function getWindBounds(streak) {
+    const pathExtents = getWindPathExtents(streak.amplitude);
+
+    return {
+      left: streak.x - streak.length - windPathStrokePadding,
+      right: streak.x + windPathStrokePadding,
+      top: streak.y - pathExtents.top,
+      bottom: streak.y + pathExtents.bottom,
+    };
+  }
+
+  function hasHorizontalSpace(streak) {
+    const candidate = getWindBounds(streak);
+
+    return windStreaks.every((otherStreak) => {
+      if (!otherStreak.active || otherStreak === streak) {
+        return true;
+      }
+
+      const other = getWindBounds(otherStreak);
+      return (
+        candidate.right + windHorizontalGap <= other.left ||
+        candidate.left >= other.right + windHorizontalGap
+      );
+    });
+  }
+
+  function positionWindVertically(streak) {
+    const pathExtents = getWindPathExtents(streak.amplitude);
+    const minimumY = windBandTop + pathExtents.top;
+    const maximumY = windBandBottom - pathExtents.bottom;
+
+    if (minimumY > maximumY) {
+      return false;
+    }
+
+    for (let attempt = 0; attempt < windPositionAttempts; attempt += 1) {
+      streak.y = minimumY + Math.random() * (maximumY - minimumY);
+      const candidate = getWindBounds(streak);
+      const hasSpace = windStreaks.every((otherStreak) => {
+        if (!otherStreak.active || otherStreak === streak) {
+          return true;
+        }
+
+        const other = getWindBounds(otherStreak);
+        return (
+          candidate.bottom + windVerticalGap <= other.top ||
+          candidate.top >= other.bottom + windVerticalGap
+        );
+      });
+
+      if (hasSpace) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function prepareWind(streak, headX = null) {
+    for (let attempt = 0; attempt < windPositionAttempts; attempt += 1) {
+      randomizeWind(streak);
+      streak.x =
+        headX ?? viewportWidth + streak.length + windPathStrokePadding;
+
+      if (hasHorizontalSpace(streak) && positionWindVertically(streak)) {
+        streak.active = true;
+        return true;
+      }
+    }
+
+    streak.active = false;
+    return false;
+  }
+
+  function scheduleNextWind(time) {
+    nextWindSpawnTime =
+      time +
+      windMinimumSpawnDelay +
+      Math.random() * (windMaximumSpawnDelay - windMinimumSpawnDelay);
+  }
+
+  function spawnWind(time) {
+    const streak = windStreaks.find((candidate) => !candidate.active);
+
+    if (!streak || !prepareWind(streak)) {
+      nextWindSpawnTime = time + windSpawnRetryDelay;
+      return;
+    }
+
+    scheduleNextWind(time);
+  }
+
+  function seedWindField(time) {
+    let nextHeadX = null;
+
+    for (const streak of windStreaks) {
+      if (nextHeadX !== null && nextHeadX <= 0) {
+        break;
+      }
+
+      if (!prepareWind(streak, nextHeadX)) {
+        continue;
+      }
+
+      const bounds = getWindBounds(streak);
+      nextHeadX =
+        bounds.left -
+        windHorizontalGap -
+        windPathStrokePadding -
+        Math.random() * windHorizontalGap;
+    }
+
+    scheduleNextWind(time);
   }
 
   function resizeAtmosphere() {
@@ -185,7 +338,9 @@ if (atmosphere && !reducedMotion.matches) {
     context.imageSmoothingEnabled = false;
 
     const leafCount = viewportWidth < 760 ? 3 : 5;
-    const windCount = viewportWidth < 760 ? 2 : 4;
+    const windCount = viewportWidth < 760 ? mobileWindCount : desktopWindCount;
+    windBandTop = viewportHeight * windBandTopRatio;
+    windBandBottom = viewportHeight * windBandBottomRatio;
 
     leaves.length = leafCount;
     windStreaks.length = windCount;
@@ -197,8 +352,10 @@ if (atmosphere && !reducedMotion.matches) {
 
     for (let index = 0; index < windCount; index += 1) {
       windStreaks[index] ??= {};
-      resetWind(windStreaks[index], true);
+      windStreaks[index].active = false;
     }
+
+    seedWindField(performance.now());
   }
 
   function drawLeaf(leaf) {
@@ -229,12 +386,16 @@ if (atmosphere && !reducedMotion.matches) {
   }
 
   function drawWind(streak) {
+    if (!streak.active) {
+      return;
+    }
+
     const halfLength = streak.length * 0.5;
     const wave = Math.sin(streak.phase) * streak.amplitude;
 
     context.save();
     context.globalAlpha = streak.opacity;
-    context.strokeStyle = "#fff2cf";
+    context.strokeStyle = windPrimaryColor;
     context.lineWidth = streak.width;
     context.lineCap = "round";
     context.beginPath();
@@ -249,7 +410,7 @@ if (atmosphere && !reducedMotion.matches) {
     );
     context.stroke();
 
-    context.globalAlpha = streak.opacity * 0.58;
+    context.globalAlpha = streak.opacity * windSecondaryOpacity;
     context.beginPath();
     context.moveTo(streak.x - streak.length * 0.18, streak.y + 7);
     context.bezierCurveTo(
@@ -273,13 +434,23 @@ if (atmosphere && !reducedMotion.matches) {
     context.clearRect(0, 0, viewportWidth, viewportHeight);
 
     for (const streak of windStreaks) {
+      if (!streak.active) {
+        continue;
+      }
+
       streak.phase += delta * 0.8;
       streak.x -= streak.speed * gust * delta;
-      drawWind(streak);
 
-      if (streak.x < -streak.length) {
-        resetWind(streak);
+      if (streak.x < -windPathStrokePadding) {
+        streak.active = false;
+        continue;
       }
+
+      drawWind(streak);
+    }
+
+    if (time >= nextWindSpawnTime) {
+      spawnWind(time);
     }
 
     for (const leaf of leaves) {

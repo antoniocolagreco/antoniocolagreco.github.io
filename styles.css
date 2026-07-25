@@ -92,7 +92,8 @@ a:focus-visible {
   opacity: 1;
 }
 
-.scene__layer--background {
+.scene__layer--background,
+.atmosphere {
   transform: translate3d(calc(var(--pointer-x) * -13px),
       calc(var(--pointer-y) * -9px),
       0) scale(1.055);
@@ -124,6 +125,96 @@ a:focus-visible {
   animation-delay: -1.4s;
 }
 
+.scene__boat-layer {
+  z-index: 0;
+  overflow: visible;
+}
+
+.scene__sailboat-drift {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sailboat-drift 560s ease-in-out infinite;
+}
+
+.scene__sailboat-bob {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: sailboat-bob 4.8s ease-in-out infinite;
+}
+
+.scene__sailboat-ripple {
+  fill: none;
+  stroke: rgba(226, 235, 224, 0.42);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.scene__sailboat-hull {
+  fill: #c6a17f;
+}
+
+.scene__sailboat-mast {
+  fill: none;
+  stroke: #c9bea0;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+
+.scene__sailboat-sail--main {
+  fill: #e3e4d2;
+}
+
+.scene__sailboat-sail--jib {
+  fill: #d8c8a5;
+}
+
+.scene__plane-track {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.scene__plane-flight {
+  position: absolute;
+  top: clamp(4rem, 10vh, 6rem);
+  left: -3rem;
+  width: clamp(18px, 1.25vw, 24px);
+  aspect-ratio: 64 / 40;
+  opacity: 0;
+  animation: plane-crossing 60s linear infinite;
+  will-change: transform, opacity;
+}
+
+.scene__plane {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #c7d1ce;
+  fill: currentColor;
+  stroke: #314650;
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+
+.scene__plane-trail {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: calc(100% - 2px);
+  width: clamp(2rem, 4vw, 4.5rem);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(225, 235, 231, 0.42));
+  filter: blur(0.7px);
+  transform: translateY(-50%);
+}
+
 .scene__layer--foreground {
   z-index: 1;
   transform: translate3d(calc(var(--pointer-x) * 25px),
@@ -142,7 +233,7 @@ a:focus-visible {
 
 .atmosphere {
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   inset: 0;
   width: 100%;
   height: 100%;
@@ -280,7 +371,9 @@ h1 {
   }
 
   .atmosphere,
-  .scene__birds {
+  .scene__birds,
+  .scene__boat-layer,
+  .scene__plane-track {
     display: none;
   }
 
@@ -299,6 +392,53 @@ h1 {
 
   50% {
     transform: scaleY(1.08) rotate(2deg);
+  }
+}
+
+@keyframes sailboat-drift {
+
+  0%,
+  100% {
+    transform: translateX(-55px);
+  }
+
+  50% {
+    transform: translateX(55px);
+  }
+}
+
+@keyframes sailboat-bob {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.8deg) scale(0.7);
+  }
+
+  50% {
+    transform: translateY(-2px) rotate(0.8deg) scale(0.7);
+  }
+}
+
+@keyframes plane-crossing {
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.92);
+  }
+
+  1% {
+    opacity: 0.72;
+  }
+
+  64% {
+    opacity: 0.72;
+    transform: translate3d(calc(100vw + 6rem), -0.75rem, 0) scale(1);
+  }
+
+  66%,
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(100vw + 6rem), -0.75rem, 0) scale(1);
   }
 }
 

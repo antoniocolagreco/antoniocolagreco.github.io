@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="Antonio Colagreco is a software engineer building web applications and distributed systems with Node.js, React, TypeScript and Kafka." />
+    content="Antonio Colagreco is a full-stack engineer building web applications with Node.js, React and TypeScript, now building event-driven backends." />
   <meta name="theme-color" content="#10161a" />
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <meta property="og:title" content="Antonio Colagreco — Software Engineer" />
@@ -64,6 +64,30 @@
             path="M310 245C350 215 435 216 470 247C435 279 350 277 310 245Z" />
         </g>
       </svg>
+      <!-- <svg class="scene__layer scene__layer--background scene__boat-layer" viewBox="0 0 1672 941"
+        preserveAspectRatio="xMidYMid slice" role="presentation" focusable="false">
+        <g transform="translate(650 535)">
+          <g class="scene__sailboat-drift">
+            <g class="scene__sailboat-bob">
+              <path class="scene__sailboat-ripple" d="M-22 11C-14 8-7 9 0 11C8 13 15 13 23 10" />
+              <path class="scene__sailboat-hull" d="M-17 2H18L11 10H-11Z" />
+              <path class="scene__sailboat-mast" d="M0 3V-29" />
+              <path class="scene__sailboat-sail scene__sailboat-sail--main" d="M2-27V0H17Z" />
+              <path class="scene__sailboat-sail scene__sailboat-sail--jib" d="M-2-22V0H-14Z" />
+            </g>
+          </g>
+        </g>
+      </svg> -->
+      <div class="scene__plane-track scene__layer--background">
+        <div class="scene__plane-flight">
+          <span class="scene__plane-trail"></span>
+          <svg class="scene__plane" viewBox="0 0 64 40" role="presentation" focusable="false">
+            <path
+              d="M63 20C63 17 61 15 57 15L39 14L29 2C28 1 26 0 23 0L20 1L26 14L11 15L6 10C5 9 3 9 1 9L3 19L1 31C3 31 5 31 6 30L11 25L26 26L20 39L23 40C26 40 28 39 29 38L39 26L57 25C61 25 63 23 63 20Z" />
+          </svg>
+        </div>
+      </div>
+      <canvas class="atmosphere" data-atmosphere aria-hidden="true"></canvas>
       <img class="scene__layer scene__layer--foreground scene__placeholder" data-placeholder-for="foreground-image"
         src="data:image/webp;base64,UklGRqIDAABXRUJQVlA4WAoAAAAQAAAALwAAGgAAQUxQSIMCAAABoG3btmm7mrGvbdu2bdu2bdu2bdu2fWM72Zgco/fxsI9WviAiJsA5162bq3DAHIue/FGcNmbo3/9Nrg2fPs13c9X22OScC65597dX77/9lLt//u38l6ZOrqrbLHucdfNzx512/ck3f7nbF8fu91esyrk+C2647/KPNCc18lMPffX72A+qc657957XSpg6Pg/e5enaVjOCcwM+lHDpntPLhTs0jpwxej5ijc0XGpF/2fKbMVXNvEB355w7j2NWWG58rN9889Qum6mvc26dGz7747CWCzl2hdUmh2azVlwXd7v2AOd6PGkij/RaeKaWleb+OzUDrMueON05dwt8vmuVv89xF2LCuosN8Y1iXffYqc65m9Wnd1cc8vECF2o6et1ayKzg8VNdb3dr8eHPg4bZV4+X9NYDRWkVPHb+YU8e9m4KvjbVLH6dvC8Kq6Dfs98OtmY9Zs0Km/RaCUkEJLVrBq52+xQyjkcJqgAn/igCKTkWoAMzrbVUN+dctx5uq/fGFc3NCWOZxEgzak4pIQUFuvXtN6il30PT/9tjveW3fuj50641iBRRkqZCyUVVQiQkK+ffZpuNZu/u3KqDIVOnDx5MHf0H2KaZGZTRZ0AiDKXQDnj1zStOWOqyU7+OIRBZFKKgtUUjNQZQcjFCC2yYnzzq6zebAo1eCNAMoLVJQFhyUhY1QkXUTEVgotAcU85FYGZGI82MVM0C0AgVEdKMkgWiFKhkEaWZkdYmAUpSgEiJJFWJ5KMICFoH26BqqHuBok0aBCABiILGDhkBY5Hskyo0CmhmWoTGts2MpFFFtASvWkSyQmlmhJFUUtFihLUJpcTQzKnWSLHpQyi0VsLMCGsTAFZQOCD4AAAAEAcAnQEqMAAbAD9BgrpUr6glozVYCAHwKAlsAJ0zaIw3ugFU1JtliOPDNb8gzRmK0E3+Jqjeb2qvGY0BdAZ2wAAA/j4lgFr98lT51lr/sZGnp6+F5RfcKPf8UQ3dTzTuAWUBkJl9zP4y8PVWSs8AdgaIlHFc1de8lT85TzgPT9w8O1m4E3FdVMC1nmJeMy0ipUa0d6Sj6/qCCv2rO7wQPC3l/hr4iMsnV+9X4eIF2k/JzmLofA1XMvC7Wc55KdeFRxsuRM3NMzkd7lQZ3MFRXbsb91MDLosVTLJZtAmnFDWS99Zcr1v89dwIzK103c+zKURtJvs2YAA="
         alt="" width="48" height="27" />
@@ -72,14 +96,11 @@
       <div class="scene__contrast"></div>
     </div>
 
-    <canvas class="atmosphere" data-atmosphere aria-hidden="true"></canvas>
-
     <section class="intro">
       <p class="intro__role">Software Engineer</p>
       <h1 id="page-title">Antonio<br />Colagreco</h1>
       <p class="intro__description">
-        I build web applications with Node.js, React, TypeScript and Kafka.
-        I love to explore and discover.
+        Building web applications in forgotten places.
       </p>
       <nav class="intro__contacts" aria-label="Contact links">
         <a class="intro__contact" href="mailto:antonio@colagreco.dev">
