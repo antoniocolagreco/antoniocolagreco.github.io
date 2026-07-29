@@ -1,7 +1,8 @@
 const page = document.querySelector(".page");
 const root = document.documentElement;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const atmosphere = document.querySelector("[data-atmosphere]");
+const windAtmosphere = document.querySelector("[data-wind-atmosphere]");
+const leafAtmosphere = document.querySelector("[data-leaf-atmosphere]");
 const fullImages = document.querySelectorAll("[data-full-image]");
 
 for (const image of fullImages) {
@@ -135,8 +136,9 @@ function resetParallax() {
 page?.addEventListener("pointermove", handlePointerMove, { passive: true });
 page?.addEventListener("pointerleave", resetParallax);
 
-if (atmosphere && !reducedMotion.matches) {
-  const context = atmosphere.getContext("2d");
+if (windAtmosphere && leafAtmosphere && !reducedMotion.matches) {
+  const windContext = windAtmosphere.getContext("2d");
+  const leafContext = leafAtmosphere.getContext("2d");
   const leaves = [];
   const windStreaks = [];
   const mobileWindCount = 4;
@@ -332,10 +334,14 @@ if (atmosphere && !reducedMotion.matches) {
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     viewportWidth = window.innerWidth;
     viewportHeight = window.innerHeight;
-    atmosphere.width = Math.round(viewportWidth * pixelRatio);
-    atmosphere.height = Math.round(viewportHeight * pixelRatio);
-    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    context.imageSmoothingEnabled = false;
+    windAtmosphere.width = Math.round(viewportWidth * pixelRatio);
+    windAtmosphere.height = Math.round(viewportHeight * pixelRatio);
+    leafAtmosphere.width = Math.round(viewportWidth * pixelRatio);
+    leafAtmosphere.height = Math.round(viewportHeight * pixelRatio);
+    windContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    windContext.imageSmoothingEnabled = false;
+    leafContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    leafContext.imageSmoothingEnabled = false;
 
     const leafCount = viewportWidth < 760 ? 3 : 5;
     const windCount = viewportWidth < 760 ? mobileWindCount : desktopWindCount;
@@ -359,30 +365,30 @@ if (atmosphere && !reducedMotion.matches) {
   }
 
   function drawLeaf(leaf) {
-    context.save();
-    context.globalAlpha = leaf.opacity;
-    context.translate(Math.round(leaf.x), Math.round(leaf.y));
-    context.rotate(leaf.rotation);
+    leafContext.save();
+    leafContext.globalAlpha = leaf.opacity;
+    leafContext.translate(Math.round(leaf.x), Math.round(leaf.y));
+    leafContext.rotate(leaf.rotation);
 
-    context.fillStyle = "#30351f";
-    context.beginPath();
-    context.moveTo(-leaf.size * 0.55, 0);
-    context.lineTo(-leaf.size * 0.2, -leaf.size * 0.34);
-    context.lineTo(leaf.size * 0.3, -leaf.size * 0.25);
-    context.lineTo(leaf.size * 0.52, 0);
-    context.lineTo(leaf.size * 0.18, leaf.size * 0.32);
-    context.lineTo(-leaf.size * 0.3, leaf.size * 0.22);
-    context.closePath();
-    context.fill();
+    leafContext.fillStyle = "#30351f";
+    leafContext.beginPath();
+    leafContext.moveTo(-leaf.size * 0.55, 0);
+    leafContext.lineTo(-leaf.size * 0.2, -leaf.size * 0.34);
+    leafContext.lineTo(leaf.size * 0.3, -leaf.size * 0.25);
+    leafContext.lineTo(leaf.size * 0.52, 0);
+    leafContext.lineTo(leaf.size * 0.18, leaf.size * 0.32);
+    leafContext.lineTo(-leaf.size * 0.3, leaf.size * 0.22);
+    leafContext.closePath();
+    leafContext.fill();
 
-    context.scale(0.78, 0.78);
-    context.fillStyle = leaf.color;
-    context.fill();
-    context.fillStyle = "#d1ae62";
-    context.fillRect(-leaf.size * 0.42, -1, leaf.size * 0.76, 2);
-    context.fillStyle = "#4b512a";
-    context.fillRect(leaf.size * 0.28, -1, leaf.size * 0.38, 2);
-    context.restore();
+    leafContext.scale(0.78, 0.78);
+    leafContext.fillStyle = leaf.color;
+    leafContext.fill();
+    leafContext.fillStyle = "#d1ae62";
+    leafContext.fillRect(-leaf.size * 0.42, -1, leaf.size * 0.76, 2);
+    leafContext.fillStyle = "#4b512a";
+    leafContext.fillRect(leaf.size * 0.28, -1, leaf.size * 0.38, 2);
+    leafContext.restore();
   }
 
   function drawWind(streak) {
@@ -393,14 +399,14 @@ if (atmosphere && !reducedMotion.matches) {
     const halfLength = streak.length * 0.5;
     const wave = Math.sin(streak.phase) * streak.amplitude;
 
-    context.save();
-    context.globalAlpha = streak.opacity;
-    context.strokeStyle = windPrimaryColor;
-    context.lineWidth = streak.width;
-    context.lineCap = "round";
-    context.beginPath();
-    context.moveTo(streak.x, streak.y);
-    context.bezierCurveTo(
+    windContext.save();
+    windContext.globalAlpha = streak.opacity;
+    windContext.strokeStyle = windPrimaryColor;
+    windContext.lineWidth = streak.width;
+    windContext.lineCap = "round";
+    windContext.beginPath();
+    windContext.moveTo(streak.x, streak.y);
+    windContext.bezierCurveTo(
       streak.x - halfLength * 0.45,
       streak.y - streak.amplitude + wave,
       streak.x - halfLength * 1.25,
@@ -408,12 +414,12 @@ if (atmosphere && !reducedMotion.matches) {
       streak.x - streak.length,
       streak.y + wave * 0.25,
     );
-    context.stroke();
+    windContext.stroke();
 
-    context.globalAlpha = streak.opacity * windSecondaryOpacity;
-    context.beginPath();
-    context.moveTo(streak.x - streak.length * 0.18, streak.y + 7);
-    context.bezierCurveTo(
+    windContext.globalAlpha = streak.opacity * windSecondaryOpacity;
+    windContext.beginPath();
+    windContext.moveTo(streak.x - streak.length * 0.18, streak.y + 7);
+    windContext.bezierCurveTo(
       streak.x - streak.length * 0.43,
       streak.y + streak.amplitude + 5,
       streak.x - streak.length * 0.7,
@@ -421,8 +427,8 @@ if (atmosphere && !reducedMotion.matches) {
       streak.x - streak.length * 0.86,
       streak.y + 4,
     );
-    context.stroke();
-    context.restore();
+    windContext.stroke();
+    windContext.restore();
   }
 
   function renderAtmosphere(time) {
@@ -431,7 +437,8 @@ if (atmosphere && !reducedMotion.matches) {
     const slowWind = 0.72 + Math.sin(time * 0.00024) * 0.16;
     const gust = slowWind + Math.max(0, Math.sin(time * 0.000071)) ** 6 * 0.8;
 
-    context.clearRect(0, 0, viewportWidth, viewportHeight);
+    windContext.clearRect(0, 0, viewportWidth, viewportHeight);
+    leafContext.clearRect(0, 0, viewportWidth, viewportHeight);
 
     for (const streak of windStreaks) {
       if (!streak.active) {
@@ -465,7 +472,8 @@ if (atmosphere && !reducedMotion.matches) {
       }
     }
 
-    context.globalAlpha = 1;
+    windContext.globalAlpha = 1;
+    leafContext.globalAlpha = 1;
     atmosphereFrame = window.requestAnimationFrame(renderAtmosphere);
   }
 

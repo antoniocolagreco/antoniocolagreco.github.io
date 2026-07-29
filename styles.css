@@ -93,7 +93,7 @@ a:focus-visible {
 }
 
 .scene__layer--background,
-.atmosphere {
+.atmosphere--wind {
   transform: translate3d(calc(var(--pointer-x) * -13px),
       calc(var(--pointer-y) * -9px),
       0) scale(1.055);
@@ -240,6 +240,14 @@ a:focus-visible {
   opacity: 1;
   image-rendering: pixelated;
   pointer-events: none;
+}
+
+.atmosphere--wind {
+  z-index: 0;
+}
+
+.atmosphere--leaves {
+  z-index: 3;
 }
 
 .intro {
