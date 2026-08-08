@@ -3,4 +3,4 @@ Allow: /
 
 Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
-# Sitemap: https://colagreco.dev/sitemap.xml
+Sitemap: https://colagreco.dev/sitemap.xml
